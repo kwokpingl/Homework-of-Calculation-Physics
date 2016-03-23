@@ -1,0 +1,32 @@
+real*8 function G(x)	!定义函数 x=G(x)
+implicit none
+real*8 x
+G=(x**3)/3
+!G=(3*x)**(1/3)
+return
+end function
+
+program main
+
+real*8 Xstar,Xk,Size,nowSize,count		!Xk为第k轮迭代根值，Xstar为k+1轮迭代根值
+real*8,external::G						!Size为精度要求，nowSize为当前已达到的精度
+print *,"Jacobi迭代法"
+print *,"请输入用于迭代的初始值："
+
+read *,Xk
+nowSize=999		!迭代初值的精度未知，初始化为一个大于精度的数
+Size=0.001		!设置需要精度
+count=0			!计数器置零，每一轮循环自增1
+
+do while( nowSize > Size )	!精度未达到要求前循环迭代
+
+count=count+1
+Xstar=G(Xk)
+nowSize=abs( Xk - Xstar )
+Xk=Xstar		!本轮迭代结束，更新Xk
+
+print *,"根值为： ",Xk,"循环次数为: ",count
+
+enddo
+pause
+end program
