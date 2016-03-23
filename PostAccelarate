@@ -1,0 +1,51 @@
+real*8 function G(x)
+implicit none
+real*8 x
+G=(x**3)/3
+!g=(3*x)**(1/3)
+return
+end function
+
+real*8 function Gx(x)
+implicit none
+real*8 x
+Gx=x**2
+!gx=(3*x)**(-2/3)
+return
+end function
+
+real*8 function root(x,L)
+implicit none
+real*8 x,L
+root=( (x**3)/3 - L*x )/(1-L)
+!root=( (3*x)**(1/3) - L*x )/(1-L)
+return
+end function
+
+
+program main
+
+real*8 Xstar,Xk,L,Size,nowSize,count
+real*8,external::G,Gx,root
+print *,"加速迭代法"
+print *,"请输入用于迭代的初始值："
+
+read *,Xk
+nowSize=999
+Size=0.001
+count=0
+
+do while( nowSize > Size )
+
+count=count+1
+L=Gx(Xk)
+
+Xstar=root(Xk,L)
+nowSize=abs( G(Xstar)-Xstar )
+Xk=Xstar
+
+print *,"根值为： ",Xk,"循环次数为: ",count
+
+enddo
+pause
+end program
