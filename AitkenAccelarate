@@ -1,4 +1,4 @@
-real*8 function G(x)
+real*8 function G(x)		!Define function x=G(x)
 implicit none
 real*8 x
 G=(x**3)/3
@@ -18,8 +18,8 @@ program main
 
 real*8 Xstar,Xk,Xba,Xflow,L,Size,nowSize,count
 real*8,external::G,root
-print *,"Aitken加速迭代法"
-print *,"请输入用于迭代的初始值："
+print *,"Aitken Accelarate"
+print *,"Please input the origin value for loop："
 
 read *,Xk
 nowSize=999
@@ -35,7 +35,7 @@ Xstar=root(Xk,Xba,Xflow)
 nowSize=abs( G(Xstar)-Xstar )
 Xk=Xstar
 
-print *,"根值为： ",Xk,"循环次数为: ",count
+print *,"The Root is： ",Xk,"Loop Times: ",count
 
 enddo
 pause
