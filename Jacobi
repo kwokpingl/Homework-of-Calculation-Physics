@@ -1,4 +1,4 @@
-real*8 function G(x)	!定义函数 x=G(x)
+real*8 function G(x)	!Define function x=G(x)
 implicit none
 real*8 x
 G=(x**3)/3
@@ -8,25 +8,24 @@ end function
 
 program main
 
-real*8 Xstar,Xk,Size,nowSize,count		!Xk为第k轮迭代根值，Xstar为k+1轮迭代根值
-real*8,external::G						!Size为精度要求，nowSize为当前已达到的精度
-print *,"Jacobi迭代法"
-print *,"请输入用于迭代的初始值："
+real*8 Xstar,Xk,Size,nowSize,count		!Xk is the root in loop K，Xstar is the root in loop K+1
+real*8,external::G						!Size is supposed Precision，nowSize is now precision
+print *,"Jacobi Iteration"
+print *,"Please input the origin value for loop："
 
 read *,Xk
-nowSize=999		!迭代初值的精度未知，初始化为一个大于精度的数
-Size=0.001		!设置需要精度
-count=0			!计数器置零，每一轮循环自增1
+nowSize=999		!nowSize is unknow in the first time，initialize a value which is bigger than supposed
+Size=0.001		!Set the supposed precision
+count=0			!set a loop-time counter
 
-do while( nowSize > Size )	!精度未达到要求前循环迭代
+do while( nowSize > Size )	!Keep loop until get the root in precision
 
 count=count+1
 Xstar=G(Xk)
 nowSize=abs( Xk - Xstar )
-Xk=Xstar		!本轮迭代结束，更新Xk
+Xk=Xstar		!One loop  finish,update the root
 
-print *,"根值为： ",Xk,"循环次数为: ",count
+print *,"The root is： ",Xk,"Loop Times: ",count
 
 enddo
-pause
 end program
