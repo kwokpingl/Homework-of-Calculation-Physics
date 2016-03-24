@@ -1,4 +1,4 @@
-real*8 function G(x)
+real*8 function G(x)		!Define function x=G(x)
 implicit none
 real*8 x
 G=(x**3)/3
@@ -6,7 +6,7 @@ G=(x**3)/3
 return
 end function
 
-real*8 function Gx(x)
+real*8 function Gx(x)		!!Define function G'(x)
 implicit none
 real*8 x
 Gx=x**2
@@ -27,24 +27,23 @@ program main
 
 real*8 Xstar,Xk,L,Size,nowSize,count
 real*8,external::G,Gx,root
-print *,"加速迭代法"
-print *,"请输入用于迭代的初始值："
+print *,"Post Accelarate"
+print *,"Please input the origin value for loop："
 
 read *,Xk
-nowSize=999
-Size=0.001
-count=0
+nowSize=999		!nowSize is unknow in the first time，initialize a value which is bigger than supposed
+Size=0.001		!Set the supposed precision
+count=0			!set a loop-time counter
 
-do while( nowSize > Size )
+do while( nowSize > Size )		!Keep loop until get the root in precision
 
 count=count+1
 L=Gx(Xk)
-
 Xstar=root(Xk,L)
 nowSize=abs( G(Xstar)-Xstar )
 Xk=Xstar
 
-print *,"根值为： ",Xk,"循环次数为: ",count
+print *,"The root is： ",Xk,"Loop Times: ",count
 
 enddo
 pause
