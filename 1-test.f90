@@ -12,10 +12,4 @@ program main
     a=6
     a=test(a)
     write(*,*) "The Answer is : ",a
- end program main
-
-real function p(args)
-    implicit none
-    real :: args
-    
-end function p
+end program main
