@@ -1,4 +1,4 @@
-real*8 function G(x)		!Define function x=G(x)
+real*8 function G(x)            !Define function x=G(x)
 implicit none
 real*8 x
 G=(x**3)/3

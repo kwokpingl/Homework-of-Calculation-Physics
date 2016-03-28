@@ -6,10 +6,10 @@ real*8 function test(x)
 end function test
 
 program main
-	implicit none
+    implicit none
   real*8,external::test
     real*8 a
     a=6
     a=test(a)
-    write(*,*) "The Answer is :	",a
+    write(*,*) "The Answer is : ",a
  end program main
