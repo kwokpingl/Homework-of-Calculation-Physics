@@ -11,7 +11,7 @@ program main
         !Build Triangular matrix A
         do i=1,8
                 do j=i+1,9
-                        A(j,1:9) = A(j,1:9) - A(i,1:9)/A(i,i)*A(j,i)
+                        A(j,i:10) = A(j,i:10) - A(i,i:10)/A(i,i)*A(j,i)
                 enddo
         enddo
         !Slove Equations
