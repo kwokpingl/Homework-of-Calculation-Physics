@@ -21,10 +21,10 @@ real*8,external::Fun,root
 print *,"Newton Downhill"
 print *,"Please input the origin value for iteration : "
 
-A=1                             !A is the Downhill-Weight  ,initializ as 1
-Asize=0.01              !Asize is the Downhill-Weight lower bound-
-                        !which means when A is lower ,you can judge that  it's the root which lead the function to diverge-
-                        !and you should correct the root value x=x+delta
+A=1                     !A is the Downhill-Weight  ,initializ as 1
+Asize=0.01         !Asize is the Downhill-Weight lower bound-
+                            !which means when A is lower ,you can judge that  it's the root which lead the function to diverge-
+                            !and you should correct the root value x=x+delta
 delta=0.1               !delta is the small-value for correcting
 xSize=0.0001    !Set the root precision
 ySize=0.0001    !Set the function value precision for check

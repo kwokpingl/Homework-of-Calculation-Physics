@@ -1,11 +1,6 @@
 program main
 
-        real*8 A(9,10) ,X(9) ,Xtemp(9) ,SIZE ,flag ,loopcount
-        real*8 sumTemp
-        data X/9*5/                !Initalize a X for loop
-        data Xtemp/9*5/       !Initalize a Xtemp for loop
-        SIZE=0.0001               !Set the accuracy
-        loopcount=0               !Use it to count the loop-times
+        real*8 A(9,10) ,X(9)
         write(*,*) "Gauss Elimination Method : "
         !Read matrix A ,treat A(i,10) as B(i)
         open(55,file='Matrix.txt',status='old')
@@ -13,22 +8,20 @@ program main
                 read (55,*) A(i,1:10)
         enddo
         close(55)
-        !Slove Equations
-        do while( flag /= 9 )
-                loopcount = loopcount+1
-                flag = 0               !Use as a flag  to Count the number of roots whose accuracy is in SIZE
-                write(*,*)
-                write(*,*) "--------","Loop-times :",loopcount ,"--------"
-                !Start a new loop for roots
-                do i = 1 ,9
-                        sumTemp = dot_product(A(i, i+1:9),X(i+1:9))
-                        X(i) = (A(i,10)-sumTemp)/A(i,i)
-                        if ( abs(X(i)-Xtemp(i)) < SIZE ) then
-                                flag = flag +1          !If the number of roots in accuracy is satisfied ,flag is N ,then success
-                        endif
-                        write(*,*) "X" ,i ," = " ,X(i)
+        !Build Triangular matrix A
+        do i=1,8
+                do j=i+1,9
+                        A(j,1:9) = A(j,1:9) - A(i,1:9)/A(i,i)*A(j,i)
                 enddo
-                Xtemp = X         !Update the Xtemp
-                write(*,*) "--------","Flag number :" ,flag ,"--------"
+        enddo
+        !Slove Equations
+        do i = 9 ,1 ,-1
+                X(i) = (A(i,10)-dot_product(A(i, i+1:9),X(i+1:9)))/A(i,i)
+                write(*,*) "X" ,i ," = " ,X(i)
+        enddo
+        !Mode for check
+        write(*,*) "    | Dot_product |","              |Matrix B|"
+        do i=1,9
+                write (*,*) dot_product(A(i,1:9),X(1:9)),A(i,10)
         enddo
 end program main
