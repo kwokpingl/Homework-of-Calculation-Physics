@@ -28,9 +28,10 @@ program main
                 enddo
                 Xtemp = X         !Update the Xtemp
                 write(*,*) "--------","Flag number :" ,flag ,"--------"
+                write(*,*) "----The Accuracy is : ",SIZE,"-------"
         enddo
         !Mode for check
-        write(*,*) "    | Dot_product |","              |Matrix B|"
+        write(*,*) "    | Dot_product |","            | Matrix B| "
         do i=1,9
                 write (*,*) dot_product(A(i,1:9),X(1:9)),A(i,10)
         enddo
