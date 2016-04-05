@@ -9,7 +9,7 @@ program main
                 read(55,*) X(i) ,Y(i)
         enddo
         close(55)
-        !Calculate the L(x)
+        !Calculate the l(x)
         write(*,*) "Lagrange Interpolation :"
         write(*,*) "Please input the x :"
         read *,xi
@@ -21,6 +21,7 @@ program main
                         endif
                 enddo
         enddo
+        !Calculate the L(x)
         result = dot_product(Y(1:15),l(1:15))
         write(*,*) "n = ", 15 ,"L(x) = ",result
 end program main
