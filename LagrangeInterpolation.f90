@@ -3,6 +3,9 @@ program main
         integer i,j
         real*8 l(15) ,Y(15) ,X(15)
         real*8 xi ,result
+        write(*,*) "Lagrange Interpolation :"
+        write(*,*) "Please input the x :"
+        read *,xi
         !Read data knew
         open(55,file='dotKnew.txt')
         do i=1,15
@@ -10,9 +13,6 @@ program main
         enddo
         close(55)
         !Calculate the l(x)
-        write(*,*) "Lagrange Interpolation :"
-        write(*,*) "Please input the x :"
-        read *,xi
         do i=1,15
                 l(i)=1
                 do j=1,15
