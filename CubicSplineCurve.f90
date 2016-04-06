@@ -17,11 +17,11 @@ program main
         h(i) = X(i+1)-X(i)
     enddo
     !Calculate the a(i) & b(i)
-    do k=1,14       ! San Wan Ju Equation
+    do k=1,14
+        ! San Wan Ju Equation
         a(k) = h(k-1)/(h(k-1)+h(k))
         b(k) = 3*( (1-a(k))*(Y(k)-Y(k-1))/h(k-1) + a(k)*(Y(k+1)-Y(k))/h(k) )
-    enddo
-    do k=1,14       ! San Zhuan Jiao Equation
+        ! San Zhuan Jiao Equation
         a1(k) = h(k)/(h(k-1)+h(k))
         b1(k) = 6/(h(k)+h(k-1))*( (Y(k+1)-Y(k))/h(k) + (Y(k)-Y(k-1))/h(k-1) )
     enddo
