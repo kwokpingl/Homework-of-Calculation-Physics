@@ -110,7 +110,7 @@ program main
             endif
         enddo
         write(2,*) xi ,result1 ,result1-1/(1+xi*xi)
-        xi=xi+0.01
+        xi=xi+0.1
     enddo
     close(1)
     close(2)
