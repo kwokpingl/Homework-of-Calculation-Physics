@@ -27,8 +27,8 @@ program main
         enddo
         !Calculate the L(x)
         result = dot_product(Y(0:15),l(0:15))
-        write(1,*) xi ,result
-        xi=xi+0.01
+        write(1,*) xi ,result ,result-1/(1+xi*xi)
+        xi=xi+0.1
     enddo
     close(1)
     write(*,*) "Succed .The data is written in 'Lagrangeout.txt' ."

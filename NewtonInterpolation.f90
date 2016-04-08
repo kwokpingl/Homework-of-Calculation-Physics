@@ -39,8 +39,8 @@ program main
             enddo
             result = result +temp
         enddo
-        write(1,*) xi,result
-        xi=xi+0.01
+        write(1,*) xi,result ,result-1/(1+xi*xi)
+        xi=xi+0.1
     enddo
     close(1)
     write(*,*) "Succed .The data is written in 'Newtonout.txt' ."

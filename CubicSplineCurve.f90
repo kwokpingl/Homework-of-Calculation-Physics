@@ -59,7 +59,6 @@ program main
             b(j) = b(j) - b(i)*Q(j,i)/Q(i,i)
             Q1(j,i:i+1) = Q1(j,i:i+1) - Q1(i,i:i+1)*Q1(j,i)/Q1(i,i)
             b1(j) = b1(j) - b1(i)*Q1(j,i)/Q1(i,i)
-            !print *,Q(j,j-1:j+1)
     enddo
     !Slove Equations QM=b
     Q(14,15)=0
@@ -75,15 +74,18 @@ program main
     open(2,file='San-Wan-Juout.txt')
     xi=-5.0
     do while (xi<=5.0d0)
-        result1=0
+        result=0     ! Initialize result
+        result1=0   ! Initialize result1
         !Calculate alpha & beta ,in addition to
         !S(x) = Y(i)*alpha(i) +m(i)*beta(i)
+        !WRONG PRINT in TEXTBOOK RETORT :
+        !In textbook ,alpha(k)=( (xi-X(k-1))/(X(k)-X(k-1)) )**2 * (1+2*(xi-X(k))/(X(k-1)-X(k)))**2
         do k=0,15
-            if (k>0 .and. X(k-1)<=xi .and. xi <=X(k)) then
-                alpha(k)=( (xi-X(k-1))/(X(k)-X(k-1)) )**2 * (1+2*(xi-X(k))/(X(k-1)-X(k)))**2
+            if (k>0 .and. X(k-1)<xi .and. xi <=X(k)) then
+                alpha(k)=( (xi-X(k-1))/(X(k)-X(k-1)) )**2 * (1+2*(xi-X(k))/(X(k-1)-X(k)))
                 beta(k)  =( (xi-X(k-1))/(X(k)-X(k-1)) )**2 * (xi-X(k))
-            else if (k<15 .and. X(k)<=xi .and. xi <=X(k+1)) then
-                alpha(k)=( (xi-X(k+1))/(X(k)-X(k+1)) )**2 * (1+2*(xi-X(k))/(X(k+1)-X(k)))**2
+            else if (k<15 .and. X(k)<xi .and. xi <=X(k+1)) then
+                alpha(k)=( (xi-X(k+1))/(X(k)-X(k+1)) )**2 * (1+2*(xi-X(k))/(X(k+1)-X(k)))
                 beta(k)  =( (xi-X(k+1))/(X(k)-X(k+1)) )**2 * (xi-X(k))
             else
                 alpha(k)=0
@@ -91,7 +93,7 @@ program main
             endif
         enddo
         result=dot_product(Y(0:15),alpha(0:15)) + dot_product(m(0:15),beta(0:15))
-        write(1,*) xi,result
+        write(1,*) xi ,result ,result-1/(1+xi*xi)
 
         !Calculate the S(i)
         !S(x)=M(k)*(X(k+1)-xi)**3/(6*h(k)) + M(k+1)*(xi-X(k))**3/h(k) + (Y(k)-M(k)*h(k)**2/6)*(X(k+1)-xi)/h(k) + (Y(k+1)-M(k+1)*h(k)**2/6)*(xi-X(k))/h(k)
@@ -99,13 +101,15 @@ program main
             if (X(k)<=xi .and. xi <X(k+1)) then
                 !The equation is too big to complie ,so express it step by step
                 result1=M(k) * ((X(k+1)-xi)**3.0) / (6.0*h(k))
-                result1=result1 + M(k+1) * ((xi-X(k))**3.0) / h(k)
+                !WRONG PRINT in TEXTBOOK RETORT :
+                !result1=result1 + M(k+1) * ((xi-X(k))**3.0) / (h(k)) in textbook!
+                result1=result1 + M(k+1) * ((xi-X(k))**3.0) / (6.0*h(k))
                 result1=result1 + (Y(k)-M(k) * (h(k)**2.0) / 6.0) * (X(k+1)-xi)/h(k)
                 result1=result1 + (Y(k+1)-M(k+1) * (h(k)**2.0) / 6.0) * (xi-X(k))/h(k)
                 exit
             endif
         enddo
-        write(2,*) xi,result1
+        write(2,*) xi ,result1 ,result1-1/(1+xi*xi)
         xi=xi+0.01
     enddo
     close(1)
