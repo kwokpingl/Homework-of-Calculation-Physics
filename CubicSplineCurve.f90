@@ -66,7 +66,7 @@ program main
     write(*,*) "Calculating the m(i) & M(i)..."
     do i = 14 ,1 ,-1
             m(i)   = (b(i)  -(Q(i, i+1)   *m(i+1)))  /Q(i,i)
-            M1(i) = (b1(i)-(Q1(i, i+1)*M1(i+1)))/Q1(i,i) 
+            M1(i) = (b1(i)-(Q1(i, i+1)*M1(i+1)))/Q1(i,i)
     enddo
 
     write(*,*) "Calculating the S(x)..."
