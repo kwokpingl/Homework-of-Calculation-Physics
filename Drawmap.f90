@@ -27,6 +27,7 @@ program main
     enddo
 
     ! Write the result
+    write(*,*) "write the result..."
     open(1,file='Map.txt')
     do i=0,1800/20
         do j=0,1500/20
@@ -93,7 +94,7 @@ real*8 function Cubic(num0,num1,num2,num3)
     !Slove equations by Chasing Elimination
     !Build Triangular matrix Q
     write(*,*) "Building the upper Triangular matrix..."
-    do i=1,13
+    do i=1,1
             j=i+1
             Q(j,i:i+1) = Q(j,i:i+1) - Q(i,i:i+1)*Q(j,i)/Q(i,i)
             b(j) = b(j) - b(i)*Q(j,i)/Q(i,i)
@@ -114,8 +115,6 @@ real*8 function Cubic(num0,num1,num2,num3)
     result1=0   ! Initialize result1
     !Calculate alpha & beta ,in addition to
     !S(x) = Y(i)*alpha(i) +m(i)*beta(i)
-    !WRONG PRINT in TEXTBOOK RETORT :
-    !In textbook ,alpha(k)=( (xi-X(k-1))/(X(k)-X(k-1)) )**2 * (1+2*(xi-X(k))/(X(k-1)-X(k)))**2
     do k=0,3
         if (k>0 .and. X(k-1)<xi .and. xi <=X(k)) then
             alpha(k)=( (xi-X(k-1))/(X(k)-X(k-1)) )**2 * (1+2*(xi-X(k))/(X(k-1)-X(k)))
@@ -129,7 +128,7 @@ real*8 function Cubic(num0,num1,num2,num3)
         endif
     enddo
     result=dot_product(Y(0:3),alpha(0:3)) + dot_product(m(0:3),beta(0:3))
-    write(*,*) xi ,result
+    write(*,*) "San-Zhuan-Jiao : ",result
 
     !Calculate the S(i)
     !S(x)=M(k)*(X(k+1)-xi)**3/(6*h(k)) + M(k+1)*(xi-X(k))**3/h(k) + (Y(k)-M(k)*h(k)**2/6)*(X(k+1)-xi)/h(k) + (Y(k+1)-M(k+1)*h(k)**2/6)*(xi-X(k))/h(k)
@@ -137,15 +136,13 @@ real*8 function Cubic(num0,num1,num2,num3)
         if (X(k)<=xi .and. xi <X(k+1)) then
             !The equation is too big to complie ,so express it step by step
             result1=M(k) * ((X(k+1)-xi)**3.0) / (6.0*h(k))
-            !WRONG PRINT in TEXTBOOK RETORT :
-            !result1=result1 + M(k+1) * ((xi-X(k))**3.0) / (h(k)) in textbook!
             result1=result1 + M(k+1) * ((xi-X(k))**3.0) / (6.0*h(k))
             result1=result1 + (Y(k)-M(k) * (h(k)**2.0) / 6.0) * (X(k+1)-xi)/h(k)
             result1=result1 + (Y(k+1)-M(k+1) * (h(k)**2.0) / 6.0) * (xi-X(k))/h(k)
             exit
         endif
     enddo
-    write(*,*) result1
+    write(*,*) "San-Wan-Ju",result1
     write(*,*) "Succeed ."
     Cubic=result
     !Cubic=result1
