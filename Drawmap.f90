@@ -1,9 +1,19 @@
 program main
     implicit none
-    integer x ,y ,i ,j
-    real*8 Map(0:1800/20 , 0:1500/20)
+    integer x ,y ,i ,j, tempX ,tempY
+    real*8 Map(0:1800/20 , 0:1500/20) ,tempH
     real*8,external::Cubic
+    ! Initialize the Map data
     Map=0
+    open(55,file='grids.txt')
+    do
+        read(55,*) tempX ,tempY ,tempH
+        if (tempX == -9999 ) then        ! Define -9999 as EOF
+            exit
+        endif
+        Map(tempX/20,tempY/20)=tempH
+    enddo
+    close(55)
     !Calculate the Map
     do x=0,1800/20
         ! Get the X-axis value 
@@ -37,6 +47,7 @@ program main
             !print *,i*20 ,j*20 ,Map(i,j)
             write(1,*) i*20 ,j*20 ,Map(i,j)
         enddo
+        write(1,*)      ! Set a blank lines between each X-axis data ,in order to fomat to plot gnuplot pm3d
     enddo
     close(1)
     write(*,*) "Succeed."
@@ -56,20 +67,14 @@ real*8 function Cubic(xi,x0,x1,x2,x3,num0,num1,num2,num3)
     m(3)    = 0
     M1(0)  = 0
     M1(3)  = 0
-    !write(*,*) "Cubic Spline Curve (Both San-Wan-Ju & San-Zhuan-Jiao) :"
-    !write(*,*) "Reading the x and y..."
     !Read data knew
-    do i=0,3
-        X=(/x0,x1,x2,x3/)                       !Read X ,Y
-        Y=(/num0,num1,num2,num3/)
-    enddo
+    X=(/x0,x1,x2,x3/)                       !Read X ,Y
+    Y=(/num0,num1,num2,num3/)
     !Calculate the h(i)
-    !write(*,*) "Calculating the h(i)..."
     do i=0,2
         h(i) = X(i+1)-X(i)
     enddo
     !Calculate the a(i) & b(i)
-    !write(*,*) "Calculating the a(i) & b(i)..."
     do k=1,2
         ! San Zhuan Jiao Equation
         a(k) = h(k-1)/(h(k-1)+h(k))
@@ -84,7 +89,6 @@ real*8 function Cubic(xi,x0,x1,x2,x3,num0,num1,num2,num3)
     b1(1)  = b1(1) - (1-a1(1))*M1(0)
     b1(2)= b1(2) - a1(2)*M1(3)
     !Build the matrix Q ,for Qm=b & QM=b
-    !write(*,*) "Building the Q(i,i)..."
     Q=0
     Q1=0
     do i=1,2
@@ -98,7 +102,6 @@ real*8 function Cubic(xi,x0,x1,x2,x3,num0,num1,num2,num3)
 
     !Slove equations by Chasing Elimination
     !Build Triangular matrix Q
-    !write(*,*) "Building the upper Triangular matrix..."
     do i=1,1
             j=i+1
             Q(j,i:i+1) = Q(j,i:i+1) - Q(i,i:i+1)*Q(j,i)/Q(i,i)
@@ -109,13 +112,11 @@ real*8 function Cubic(xi,x0,x1,x2,x3,num0,num1,num2,num3)
     !Slove Equations QM=b
     Q(2,3)=0
     Q1(2,3)=0
-    !write(*,*) "Calculating the m(i) & M(i)..."
     do i = 2 ,1 ,-1
             m(i)   = (b(i)  -(Q(i, i+1)   *m(i+1)))  /Q(i,i)
             M1(i) = (b1(i)-(Q1(i, i+1)*M1(i+1)))/Q1(i,i)
     enddo
 
-    !write(*,*) "Calculating the S(x)..."
     result=0     ! Initialize result
     result1=0   ! Initialize result1
     !Calculate alpha & beta ,in addition to
@@ -133,7 +134,6 @@ real*8 function Cubic(xi,x0,x1,x2,x3,num0,num1,num2,num3)
         endif
     enddo
     result=dot_product(Y(0:3),alpha(0:3)) + dot_product(m(0:3),beta(0:3))
-    !write(*,*) "San-Zhuan-Jiao : ",result
 
     !Calculate the S(i)
     !S(x)=M(k)*(X(k+1)-xi)**3/(6*h(k)) + M(k+1)*(xi-X(k))**3/h(k) + (Y(k)-M(k)*h(k)**2/6)*(X(k+1)-xi)/h(k) + (Y(k+1)-M(k+1)*h(k)**2/6)*(xi-X(k))/h(k)
@@ -147,9 +147,7 @@ real*8 function Cubic(xi,x0,x1,x2,x3,num0,num1,num2,num3)
             exit
         endif
     enddo
-    !write(*,*) "San-Wan-Ju",result1
-    !write(*,*) "Succeed ."
-    Cubic=result
-    !Cubic=result1
+    Cubic=result        ! Use the first derivatives
+    !Cubic=result1     ! Use the second derivatives
     return
 end function Cubic
