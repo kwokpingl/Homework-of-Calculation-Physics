@@ -28,7 +28,7 @@ program main
     do i=0,N
         x=a+i*h
         y=Euler(y,f(x,y),h)
-        write(1,*) x ,y
+        write(1,*) x ,y ,y-3.0d0/(1.0d0+x*x*x)
     enddo
     close(1)
 end program main
