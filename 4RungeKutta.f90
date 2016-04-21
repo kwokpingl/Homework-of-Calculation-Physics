@@ -22,16 +22,17 @@ program main
     b=1.5d0
     h=0.1d0/8d0
     N=(b-a)/h
+    x=a
     y=3.0d0
     ! Calculate the y
     open(1,file='RungeKuttaout.txt')
-    do i=0,N
-        x=a+i*h
+    do i=1,N
         K1=f(x,y)
         K2=f(x+h/2.0d0,y+h/2.0d0*K1)
         K3=f(x+h/2.0d0,y+h/2.0d0*K2)
         K4=f(x+h,y+h*K3)
         y=RungeKutta(y,K1,K2,K3,K4,h)
+        x=a+i*h
         write(1,*) x ,y ,y-3.0d0/(1.0d0+x*x*x)
     enddo
     close(1)

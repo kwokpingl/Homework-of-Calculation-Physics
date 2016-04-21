@@ -26,10 +26,10 @@ program main
     y=3.0d0
     ! Calculate the y
     open(1,file='IEulerout.txt')
-    do i=0,N
-        x=a+i*h
+    do i=1,N
         yTemp=Euler(y,f(x,y),h)
-        y=Euler(y,f(x,yTemp),h)
+        y=Euler(y,(f(x,y)+f(a+i*h,yTemp))/2d0,h)
+        x=a+i*h
         write(1,*) x ,y ,y-3.0d0/(1.0d0+x*x*x)
     enddo
     close(1)
